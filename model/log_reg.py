@@ -65,7 +65,7 @@ x_test = normalize(x_test)
 params = np.zeros(x_train.shape[1] + 1)
 
 # Tasa de aprendizaje
-lr = 0.01
+lr = 0.03
 
 # Número de iteraciones
 epochs = 10000
@@ -78,11 +78,15 @@ for epoch in range(epochs):
     print(f'Epoch {epoch}, Error: {error}')
 
 # Predicciones
-preds = predict(params, x_train) >= 0.5
+preds_train = predict(params, x_train) >= 0.5
+preds_test = predict(params, x_test) >= 0.5
 
 # Evaluación de las predicciones
-accuracy = np.mean(preds == y_train)
-print(f'Accuracy: {accuracy}')
+accuracy_train = np.mean(preds_train == y_train)
+print(f'Accuracy: {accuracy_train}')
+
+accuracy_test = np.mean(preds_test == y_test)
+print(f'Accuracy: {accuracy_test}')
 
 plt.plot(__errors__)
 plt.title('Logistic Regression Error per Iteration')
@@ -90,14 +94,14 @@ plt.xlabel('Iterations')
 plt.ylabel('Value of Error')
 plt.show()
 
-plt.scatter(range(len(preds)), preds, color='blue', alpha=0.1, label='Predictions')
-plt.scatter(range(len(y_train)), y_train, color='red', alpha=0.1, label='Actual Values')
+# plt.scatter(range(len(preds_train)), preds_train, color='blue', alpha=0.1, label='Predictions from train')
+# plt.scatter(range(len(y_train)), y_train, color='red', alpha=0.1, label='Actual Values')
 
-# Add title and labels
-plt.title('Scatter Plot of Predictions and Actual Values')
-plt.xlabel('Sample Index')
-plt.ylabel('Value')
-plt.legend()
+# # Add title and labels
+# plt.title('Scatter Plot of Predictions and Actual Values')
+# plt.xlabel('Sample Index')
+# plt.ylabel('Value')
+# plt.legend()
 
-# Show plot
-plt.show()
+# # Show plot
+# plt.show()
