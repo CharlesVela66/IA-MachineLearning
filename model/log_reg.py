@@ -88,7 +88,7 @@ params = np.zeros(x_train.shape[1] + 1)
 lr = 0.03
 
 # Número de iteraciones
-epochs = 5000
+epochs = 3000
 
 # Entrenamiento
 for epoch in range(epochs):
@@ -119,6 +119,7 @@ plt.plot(__errors__)
 plt.title('Logistic Regression Error per Iteration')
 plt.xlabel('Iterations')
 plt.ylabel('Value of Error')
+plt.ylim(0,0.8)
 plt.show()
 
 
