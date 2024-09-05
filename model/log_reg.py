@@ -78,7 +78,13 @@ def roc_curve(y_true, y_preds):
     return fpr_values, tpr_values
 
 def auc_roc(fpr_values, tpr_values):
-    auc = np.trapz(tpr_values, fpr_values)
+    auc = 0.0
+    
+    for i in range(1, len(fpr_values)):
+        width = fpr_values[i] - fpr_values[i - 1]
+        height_avg = (tpr_values[i] + tpr_values[i - 1]) / 2
+        auc += width * height_avg
+    
     return auc
 
 # Preparar los datos para la regresión logística
@@ -164,7 +170,7 @@ plt.plot(fpr_values, tpr_values, color='blue', label=f'ROC Curve (AUC = {auc_roc
 plt.plot([0, 1], [0, 1], color='red', linestyle='--', label='Random Classifier (AUC = 0.5)')
 plt.xlabel('False Positive Rate (FPR)')
 plt.ylabel('True Positive Rate (TPR)')
-plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.title('ROC Curve (Test)')
 plt.legend(loc='lower right')
 plt.grid(True)
 plt.show()
