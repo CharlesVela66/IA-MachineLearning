@@ -31,7 +31,7 @@ xgboost_model = xgb.XGBClassifier(n_estimators=100,
                                   learning_rate=0.1,
                                   objective='binary:logistic',
                                   scale_pos_weight=1.9,
-                                  use_label_encoder=False,  # Evitar warnings
+                                  use_label_encoder=False,
                                   eval_metric='logloss')
 
 # Ajustar los datos de entrenamiento en el modelo XGBoost

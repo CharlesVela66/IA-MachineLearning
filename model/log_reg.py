@@ -18,7 +18,7 @@ def sigmoid(z):
 def predict(params, X):
     return sigmoid(np.dot(X, params[:-1]) + params[-1])
 
-# Funcion para calcular la perdida de entropia cruzada con pesos
+# Funcion para calcular la perdida de entropia cruzada
 def cross_entropy(params, X, y):
     predictions = predict(params, X)
     epsilon = 1e-15
@@ -27,11 +27,11 @@ def cross_entropy(params, X, y):
     return np.mean(errors)
 
 # Funcion que optimiza los parametros del algoritmo mediante la actualizacion de los parametros
-def gradient_descent(params, X, y, lr, lambda_reg=1e-15):
+def gradient_descent(params, X, y, lr, lambda_reg=0.001):
     predictions = predict(params, X)
     errors = predictions - y
     gradient = np.dot(X.T, errors) / len(y)
-    params[:-1] -= lr * (gradient + lambda_reg * params[:-1])
+    params[:-1] -= lr * (gradient + lambda_reg * params[:-1]) #El valor de lambda_reg controla la fuerza de la regularización. Al aumentar su valor, se penaliza más fuertemente los coeficientes grandes.
     params[-1] -= lr * np.mean(errors)
     return params
 
@@ -150,7 +150,7 @@ plt.show()
 
 
 def scatter_plot(pred, actual, num_points, title):
-    plt.figure(figsize=(14, 6))
+    plt.figure(figsize=(10, 6))
     plt.scatter(range(num_points), pred[:num_points], color='blue', alpha=0.3, label='Predictions')
     plt.scatter(range(num_points), actual[:num_points], color='red', alpha=0.3, label='Actual Values')
     plt.title(title)
@@ -159,28 +159,39 @@ def scatter_plot(pred, actual, num_points, title):
     plt.legend()
     plt.show()
 
-fpr_values, tpr_values = roc_curve(y_test, preds_test)
-print("False positives values: ",fpr_values)
-print("True positives values: ", tpr_values)
 
-print("AUC ROC VALUE: ",auc_roc(fpr_values, tpr_values))
+fpr_values_train, tpr_values_train = roc_curve(y_test, preds_test)
+fpr_values_val, tpr_values_val = roc_curve(y_test, preds_test)
+fpr_values_test, tpr_values_test = roc_curve(y_test, preds_test)
 
 plt.figure(figsize=(8, 6))
-plt.plot(fpr_values, tpr_values, color='blue', label=f'ROC Curve (AUC = {auc_roc(fpr_values, tpr_values):.2f})')
+
+# Curva ROC para el conjunto de prueba (test)
+plt.plot(fpr_values_test, tpr_values_test, color='blue', label=f'Test ROC Curve (AUC = {auc_roc(fpr_values_test, tpr_values_test):.2f})')
+
+# Curva ROC para el conjunto de entrenamiento (train)
+plt.plot(fpr_values_train, tpr_values_train, color='green', label=f'Train ROC Curve (AUC = {auc_roc(fpr_values_train, tpr_values_train):.2f})')
+
+# Curva ROC para el conjunto de validación (validation)
+plt.plot(fpr_values_val, tpr_values_val, color='orange', label=f'Validation ROC Curve (AUC = {auc_roc(fpr_values_val, tpr_values_val):.2f})')
+
+# Línea de referencia para un clasificador aleatorio
 plt.plot([0, 1], [0, 1], color='red', linestyle='--', label='Random Classifier (AUC = 0.5)')
+
 plt.xlabel('False Positive Rate (FPR)')
 plt.ylabel('True Positive Rate (TPR)')
-plt.title('ROC Curve (Test)')
+plt.title('ROC Curves')
 plt.legend(loc='lower right')
 plt.grid(True)
 plt.show()
+
 
 # Desired FPR and TPR
 desired_fpr = 0.22
 desired_tpr = 0.80
 
 # Find the index of the closest FPR
-index = np.argmin(np.abs(np.array(fpr_values) - desired_fpr))
+index = np.argmin(np.abs(np.array(fpr_values_test) - desired_fpr))
 
 # Get the threshold corresponding to this index
 threshold = __thresholds__[index]
@@ -218,3 +229,4 @@ scatter_plot(preds_train, y_train, 100, "Scatter Plot of Predictions vs Actual V
 plot_confusion_matrix(y_train, preds_train, title='Confusion Matrix - Train Data')
 plot_confusion_matrix(y_val, preds_val, title='Confusion Matrix - Validation Data')
 plot_confusion_matrix(y_test, preds_test, title='Confusion Matrix - Test Data')
+

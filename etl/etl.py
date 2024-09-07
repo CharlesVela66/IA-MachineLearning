@@ -40,7 +40,7 @@ df_cleaned = df.dropna()
 # Filter rows where 'income_int' is zero
 zero_income_rows = df_cleaned[df_cleaned['income_int'] == 0]
 
-# Randomly select 2000 rows from the filtered DataFrame
+# Randomly select 4000 rows from the filtered DataFrame
 random_sample = zero_income_rows.sample(n=4000, random_state=42)
 
 # Create a new DataFrame without the randomly selected rows
