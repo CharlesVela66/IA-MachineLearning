@@ -160,8 +160,8 @@ def scatter_plot(pred, actual, num_points, title):
     plt.show()
 
 
-fpr_values_train, tpr_values_train = roc_curve(y_test, preds_test)
-fpr_values_val, tpr_values_val = roc_curve(y_test, preds_test)
+fpr_values_train, tpr_values_train = roc_curve(y_train, preds_train)
+fpr_values_val, tpr_values_val = roc_curve(y_val, preds_val)
 fpr_values_test, tpr_values_test = roc_curve(y_test, preds_test)
 
 plt.figure(figsize=(8, 6))

@@ -27,7 +27,7 @@ x_test = scaler.transform(x_test)
 forest = RandomForestClassifier(n_estimators=100,
                                 criterion='gini',
                                 max_features='log2',
-                                max_depth=4,
+                                max_depth=15,
                                 class_weight='balanced',
                                 )
 
